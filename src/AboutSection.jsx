@@ -136,7 +136,8 @@ const PremiumCard = ({ children, className, itemColor = "rgba(16,185,129,0.15)" 
   const [opacity, setOpacity] = useState(0);
 
   const handleMouseMove = (e) => {
-    if (!ref.current) return;
+    // Disable hover tilt strictly on touch devices/small screens to prevent mobile scrolling bugs
+    if (!ref.current || window.innerWidth < 1024) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -167,10 +168,10 @@ const PremiumCard = ({ children, className, itemColor = "rgba(16,185,129,0.15)" 
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="h-full w-full rounded-[2rem] bg-white/70 backdrop-blur-2xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 overflow-hidden"
+        className="h-full w-full rounded-3xl md:rounded-[2rem] bg-white/70 backdrop-blur-2xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] lg:hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 overflow-hidden"
       >
         <motion.div
-          className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-0"
+          className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-0 hidden lg:block"
           style={{
             opacity,
             background: useTransform(
@@ -180,7 +181,7 @@ const PremiumCard = ({ children, className, itemColor = "rgba(16,185,129,0.15)" 
           }}
         />
         
-        <div className="absolute inset-0 rounded-[2rem] p-[1px] bg-gradient-to-br from-transparent to-transparent group-hover:from-emerald-200 group-hover:to-teal-200 transition-colors duration-700 pointer-events-none z-10" />
+        <div className="absolute inset-0 rounded-3xl md:rounded-[2rem] p-[1px] bg-gradient-to-br from-transparent to-transparent lg:group-hover:from-emerald-200 lg:group-hover:to-teal-200 transition-colors duration-700 pointer-events-none z-10" />
 
         <div className="relative z-20 h-full w-full flex flex-col" style={{ transformStyle: "preserve-3d" }}>
           {children}
@@ -279,7 +280,7 @@ export default function AboutSection() {
   });
 
   return (
-    <section className="relative w-full py-32 overflow-hidden bg-white text-slate-900 font-sans selection:bg-emerald-200/50 cursor-none md:cursor-auto">
+    <section className="relative w-full py-20 lg:py-32 overflow-hidden bg-white text-slate-900 font-sans selection:bg-emerald-200/50 cursor-none lg:cursor-auto">
       
       <CustomCursor />
 
@@ -291,28 +292,28 @@ export default function AboutSection() {
           <motion.div 
             animate={{ scale: [1, 1.1, 1], rotate: [0, 45, 0], x: [0, 50, 0], y: [0, 30, 0] }}
             transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-br from-[#d1fae5] to-[#f0fdf4] blur-[130px] rounded-[100%] mix-blend-multiply" 
+            className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] lg:w-[50%] lg:h-[50%] bg-gradient-to-br from-[#d1fae5] to-[#f0fdf4] blur-[100px] lg:blur-[130px] rounded-[100%] mix-blend-multiply" 
           />
           <motion.div 
             animate={{ scale: [1, 1.2, 1], rotate: [0, -30, 0], x: [0, -40, 0], y: [0, -50, 0] }}
             transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute top-[20%] right-[-10%] w-[45%] h-[45%] bg-gradient-to-br from-white to-[#ccfbf1] blur-[120px] rounded-[100%] mix-blend-multiply" 
+            className="absolute top-[20%] right-[-10%] w-[70%] h-[70%] lg:w-[45%] lg:h-[45%] bg-gradient-to-br from-white to-[#ccfbf1] blur-[100px] lg:blur-[120px] rounded-[100%] mix-blend-multiply" 
           />
           <motion.div 
             animate={{ scale: [1, 1.15, 1], x: [0, 30, 0] }}
             transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-            className="absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-gradient-to-br from-[#f0fdf4] to-[#a7f3d0] blur-[140px] rounded-[100%] mix-blend-multiply" 
+            className="absolute bottom-[-10%] left-[20%] w-[80%] h-[80%] lg:w-[50%] lg:h-[50%] bg-gradient-to-br from-[#f0fdf4] to-[#a7f3d0] blur-[120px] lg:blur-[140px] rounded-[100%] mix-blend-multiply" 
           />
         </motion.div>
       </div>
 
       {/* --- GEOMETRIC FLOATING SHAPES (PARALLAX & ROTATION) --- */}
-      <motion.div style={{ y: yParallaxFast, rotate: rotateShape }} className="absolute top-1/4 left-5 w-32 h-32 rounded-[2rem] bg-gradient-to-tr from-white to-[#ecfdf5] border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] opacity-70 backdrop-blur-2xl hidden lg:block pointer-events-none" />
-      <motion.div style={{ y: yParallaxSlow, rotate: useTransform(scrollYProgress, [0, 1], [0, -360]) }} className="absolute bottom-1/4 right-5 w-40 h-40 rounded-full bg-gradient-to-tr from-white to-[#f0fdfa] border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] opacity-70 backdrop-blur-2xl hidden lg:block pointer-events-none flex items-center justify-center">
+      <motion.div style={{ y: yParallaxFast, rotate: rotateShape }} className="absolute top-1/4 left-5 w-32 h-32 rounded-[2rem] bg-gradient-to-tr from-white to-[#ecfdf5] border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] opacity-70 backdrop-blur-2xl hidden xl:block pointer-events-none" />
+      <motion.div style={{ y: yParallaxSlow, rotate: useTransform(scrollYProgress, [0, 1], [0, -360]) }} className="absolute bottom-1/4 right-5 w-40 h-40 rounded-full bg-gradient-to-tr from-white to-[#f0fdfa] border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] opacity-70 backdrop-blur-2xl hidden xl:block pointer-events-none flex items-center justify-center">
         <div className="w-20 h-20 rounded-full border border-[#a7f3d0]/50" />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
         
         {/* --- HEADER --- */}
         <motion.div 
@@ -320,18 +321,18 @@ export default function AboutSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeIn}
-          className="text-center max-w-5xl mx-auto mb-32 flex flex-col items-center"
+          className="text-center max-w-5xl mx-auto mb-20 lg:mb-32 flex flex-col items-center"
         >
           <Magnetic>
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-slate-200/60 backdrop-blur-xl mb-10 shadow-sm hover:shadow-md transition-shadow">
-              <Sparkles className="w-4 h-4 text-emerald-500 animate-pulse" />
-              <span className="text-sm font-bold tracking-widest uppercase text-slate-700">About IISPPR Academy</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 lg:px-5 lg:py-2.5 rounded-full bg-white border border-slate-200/60 backdrop-blur-xl mb-8 lg:mb-10 shadow-sm hover:shadow-md transition-shadow">
+              <Sparkles className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-emerald-500 animate-pulse" />
+              <span className="text-xs lg:text-sm font-bold tracking-widest uppercase text-slate-700">About IISPPR Academy</span>
             </div>
           </Magnetic>
           
-          <div className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-[1.05] tracking-tight text-slate-900 w-full">
+          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 lg:mb-8 leading-[1.1] lg:leading-[1.05] tracking-tight text-slate-900 w-full">
             <AnimatedText text="International Institute of" className="justify-center" />
-            <span className="relative inline-block mt-2">
+            <span className="relative inline-block mt-1 lg:mt-2">
               <AnimatedText text="SDGs & Public Policy" className="text-transparent bg-clip-text bg-gradient-to-r from-[#10b981] via-[#059669] to-[#0ea5e9] justify-center pb-2" />
               <motion.span 
                 initial={{ width: 0 }}
@@ -346,105 +347,105 @@ export default function AboutSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
-            className="text-xl md:text-2xl text-slate-600 leading-relaxed max-w-3xl mx-auto font-light"
+            className="text-lg sm:text-xl md:text-2xl text-slate-600 leading-relaxed max-w-3xl mx-auto font-light px-2"
           >
             We offer a globally structured online program in Public Policy & Data Science, designed for students, professionals, and aspiring researchers.
           </motion.p>
         </motion.div>
 
         {/* --- THE FLAGSHIP COURSE & 3D QUOTE --- */}
-        <div className="mb-40 grid lg:grid-cols-2 gap-20 items-center">
+        <div className="mb-24 lg:mb-40 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
             <motion.div variants={fadeIn} className="inline-block px-4 py-1.5 rounded-full bg-[#ecfdf5] text-[#059669] font-semibold text-sm mb-6 border border-[#a7f3d0]">
               Flagship Course
             </motion.div>
-            <motion.h3 variants={fadeIn} className="text-4xl md:text-5xl font-extrabold mb-8 text-slate-900 tracking-tight">Master Policy & Data</motion.h3>
-            <motion.p variants={fadeIn} className="text-slate-600 text-xl leading-relaxed mb-10 font-light">
+            <motion.h3 variants={fadeIn} className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 lg:mb-8 text-slate-900 tracking-tight">Master Policy & Data</motion.h3>
+            <motion.p variants={fadeIn} className="text-slate-600 text-lg sm:text-xl leading-relaxed mb-8 lg:mb-10 font-light">
               This flagship course blends rigorous policy analysis with practical data science tools, helping learners understand how policies are shaped—and how to influence them using data, research, and effective communication.
             </motion.p>
-            <ul className="space-y-6">
+            <ul className="space-y-4 lg:space-y-6">
               {[
                 "Decode complex systems in governance & education",
                 "Apply data literacy and statistics responsibly",
                 "Communicate insights that create real-world impact"
               ].map((item, i) => (
-                <motion.li variants={slideInList} key={i} className="flex items-center gap-5 text-slate-700 text-lg font-medium group">
-                  <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0 shadow-sm border border-emerald-100 group-hover:scale-110 group-hover:bg-[#10b981] group-hover:text-white transition-all duration-300">
-                    <ChevronRight className="w-5 h-5" />
+                <motion.li variants={slideInList} key={i} className="flex items-start lg:items-center gap-4 lg:gap-5 text-slate-700 text-base sm:text-lg font-medium group">
+                  <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0 shadow-sm border border-emerald-100 group-hover:scale-110 group-hover:bg-[#10b981] group-hover:text-white transition-all duration-300 mt-0.5 lg:mt-0">
+                    <ChevronRight className="w-4 h-4 lg:w-5 lg:h-5" />
                   </div>
-                  {item}
+                  <span className="flex-1 leading-snug">{item}</span>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
 
-          {/* 3D Floating Quote Card */}
+          {/* Floating Quote Card */}
           <PremiumCard className="w-full h-full" itemColor="rgba(16,185,129,0.1)">
-            <div className="relative p-12 md:p-16 h-full flex flex-col justify-center">
-              <motion.div style={{ transform: "translateZ(60px)" }} className="relative z-10">
+            <div className="relative p-8 sm:p-10 lg:p-16 h-full flex flex-col justify-center">
+              <motion.div style={{ transform: "translateZ(60px)" }} className="relative z-10 lg:block hidden">
                 <Quote className="w-16 h-16 text-[#10b981]/30 mb-8 drop-shadow-md" />
               </motion.div>
               
-              <h4 style={{ transform: "translateZ(50px)" }} className="text-3xl font-bold text-slate-900 mb-8 leading-snug relative z-10 tracking-tight">
+              <h4 style={{ transform: "translateZ(50px)" }} className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 lg:mb-8 leading-snug relative z-10 tracking-tight">
                 Why This Program Matters
               </h4>
               
-              <p style={{ transform: "translateZ(30px)" }} className="text-xl text-slate-600 leading-relaxed font-light italic relative z-10">
+              <p style={{ transform: "translateZ(30px)" }} className="text-lg sm:text-xl text-slate-600 leading-relaxed font-light italic relative z-10">
                 "In a world where policy decisions shape education, governance, and climate action, IISPPR empowers learners to decode complex systems, apply data responsibly, and communicate insights that create real-world impact."
               </p>
               
               <motion.div 
                 animate={{ y: [0, -15, 0], scale: [1, 1.05, 1] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -right-10 w-64 h-64 bg-gradient-to-br from-[#10b981]/10 to-[#0ea5e9]/10 rounded-full blur-3xl pointer-events-none"
+                className="absolute -top-10 -right-10 w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-[#10b981]/10 to-[#0ea5e9]/10 rounded-full blur-2xl lg:blur-3xl pointer-events-none"
               />
             </div>
           </PremiumCard>
         </div>
 
         {/* --- ANIMATED JOURNEY TIMELINE --- */}
-        <div className="mb-40 relative">
+        <div className="mb-24 lg:mb-40 relative">
           <motion.div 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={fadeIn}
-            className="text-center mb-24"
+            className="text-center mb-16 lg:mb-24"
           >
-            <h3 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 tracking-tight">The Learning Journey</h3>
-            <p className="text-slate-500 text-xl font-light">A structured, world-class approach to mastering policy</p>
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 lg:mb-6 text-slate-900 tracking-tight">The Learning Journey</h3>
+            <p className="text-slate-500 text-lg sm:text-xl font-light px-2">A structured, world-class approach to mastering policy</p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto relative" ref={timelineRef}>
-            <div className="absolute left-[39px] md:left-[43px] top-10 bottom-10 w-[2px] bg-slate-200" />
+            <div className="absolute left-[31px] md:left-[39px] top-6 md:top-10 bottom-10 w-[2px] bg-slate-200" />
             <motion.div 
               style={{ scaleY: timelineProgress, transformOrigin: "top" }} 
-              className="absolute left-[39px] md:left-[43px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-[#10b981] via-[#059669] to-[#0ea5e9] shadow-[0_0_15px_rgba(16,185,129,0.5)]" 
+              className="absolute left-[31px] md:left-[39px] top-6 md:top-10 bottom-10 w-[2px] bg-gradient-to-b from-[#10b981] via-[#059669] to-[#0ea5e9] shadow-[0_0_15px_rgba(16,185,129,0.5)]" 
             />
 
             {timeline.map((item, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, x: -30 }}
+                initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: i * 0.2 }}
-                className="relative flex items-start gap-10 mb-16 group"
+                transition={{ duration: 0.6, delay: i * 0.2 }}
+                className="relative flex items-start gap-6 md:gap-10 mb-12 lg:mb-16 group"
               >
-                <div className="relative z-10 w-20 h-20 rounded-2xl bg-white shadow-lg border border-slate-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:border-[#10b981] transition-all duration-500 ease-out overflow-hidden">
-                  <div className="absolute inset-0 bg-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative w-6 h-6 rounded-full bg-gradient-to-tr from-[#10b981] to-[#0ea5e9] shadow-inner flex items-center justify-center">
-                     <div className="w-2 h-2 bg-white rounded-full animate-ping opacity-80" />
+                <div className="relative z-10 w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white shadow-md lg:shadow-lg border border-slate-100 flex items-center justify-center flex-shrink-0 lg:group-hover:scale-110 lg:group-hover:border-[#10b981] transition-all duration-500 ease-out overflow-hidden mt-1 md:mt-0">
+                  <div className="absolute inset-0 bg-emerald-50 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative w-5 h-5 md:w-6 md:h-6 rounded-full bg-gradient-to-tr from-[#10b981] to-[#0ea5e9] shadow-inner flex items-center justify-center">
+                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-ping opacity-80" />
                   </div>
                 </div>
                 
                 <PremiumCard className="w-full" itemColor="rgba(16,185,129,0.05)">
-                  <div className="p-10 h-full flex flex-col justify-center">
-                    <span style={{ transform: "translateZ(20px)" }} className="inline-block self-start text-sm font-bold text-[#10b981] tracking-widest uppercase mb-4 px-4 py-1.5 bg-emerald-50 rounded-full border border-emerald-100/50">
+                  <div className="p-6 md:p-10 h-full flex flex-col justify-center">
+                    <span style={{ transform: "translateZ(20px)" }} className="inline-block self-start text-xs lg:text-sm font-bold text-[#10b981] tracking-widest uppercase mb-3 lg:mb-4 px-3 py-1 lg:px-4 lg:py-1.5 bg-emerald-50 rounded-full border border-emerald-100/50">
                       {item.phase}
                     </span>
-                    <h4 style={{ transform: "translateZ(40px)" }} className="text-3xl font-bold text-slate-900 mb-4 tracking-tight">{item.title}</h4>
-                    <p style={{ transform: "translateZ(30px)" }} className="text-slate-600 text-lg leading-relaxed font-light">{item.desc}</p>
+                    <h4 style={{ transform: "translateZ(40px)" }} className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 lg:mb-4 tracking-tight">{item.title}</h4>
+                    <p style={{ transform: "translateZ(30px)" }} className="text-slate-600 text-base lg:text-lg leading-relaxed font-light">{item.desc}</p>
                   </div>
                 </PremiumCard>
               </motion.div>
@@ -458,10 +459,10 @@ export default function AboutSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={fadeIn}
-          className="mb-20 text-center"
+          className="mb-16 lg:mb-20 text-center"
         >
-          <h3 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 tracking-tight">Program Highlights</h3>
-          <p className="text-slate-500 text-xl font-light">Key features of our globally structured curriculum</p>
+          <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 lg:mb-6 text-slate-900 tracking-tight">Program Highlights</h3>
+          <p className="text-slate-500 text-lg sm:text-xl font-light px-2">Key features of our globally structured curriculum</p>
         </motion.div>
 
         <motion.div 
@@ -469,39 +470,39 @@ export default function AboutSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={staggerContainer}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 mb-32"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 mb-24 lg:mb-32"
         >
           {highlights.map((item, index) => (
             <motion.div key={index} variants={fadeIn} className="h-full">
               <PremiumCard className="h-full" itemColor={item.glow}>
-                <div className="p-8 md:p-10 h-full flex flex-col items-start justify-start relative group-hover:-translate-y-2 transition-transform duration-500">
+                <div className="p-6 md:p-8 lg:p-10 h-full flex flex-col items-start justify-start relative lg:group-hover:-translate-y-2 transition-transform duration-500">
                     
                     <motion.div 
                       animate={{ y: [0, -6, 0] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
                       style={{ transform: "translateZ(50px)" }} 
-                      className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${item.color} mb-6 shadow-[0_10px_20px_rgba(0,0,0,0.05)] border border-white/50`}
+                      className={`inline-flex p-3 lg:p-4 rounded-2xl bg-gradient-to-br ${item.color} mb-5 lg:mb-6 shadow-[0_10px_20px_rgba(0,0,0,0.05)] border border-white/50`}
                     >
-                      <item.icon className="w-7 h-7 text-white drop-shadow-md" />
+                      <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white drop-shadow-md" />
                     </motion.div>
                     
-                    <h4 style={{ transform: "translateZ(40px)" }} className="text-4xl font-extrabold text-slate-900 mb-2 tracking-tight">
+                    <h4 style={{ transform: "translateZ(40px)" }} className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-1 lg:mb-2 tracking-tight">
                       <AnimatedCounter from={0} to={item.value} suffix={item.suffix} />
                     </h4>
-                    <h5 style={{ transform: "translateZ(30px)" }} className="text-xl font-bold text-[#10b981] mb-1">{item.title}</h5>
-                    <p style={{ transform: "translateZ(20px)" }} className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-5">{item.subtitle}</p>
+                    <h5 style={{ transform: "translateZ(30px)" }} className="text-lg lg:text-xl font-bold text-[#10b981] mb-1">{item.title}</h5>
+                    <p style={{ transform: "translateZ(20px)" }} className="text-[11px] lg:text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4 lg:mb-5">{item.subtitle}</p>
                     
-                    <div style={{ transform: "translateZ(25px)" }} className="relative overflow-hidden pt-5 border-t border-slate-100/80 w-full mt-auto flex flex-col flex-grow">
-                      <p className="text-slate-500 font-light leading-relaxed text-[15px] flex-grow">
+                    <div style={{ transform: "translateZ(25px)" }} className="relative overflow-hidden pt-4 lg:pt-5 border-t border-slate-100/80 w-full mt-auto flex flex-col flex-grow">
+                      <p className="text-slate-500 font-light leading-relaxed text-sm lg:text-[15px] flex-grow">
                         {item.description}
                       </p>
                       
-                      <div className="mt-6 flex items-center gap-2 text-[#0ea5e9] font-medium text-sm cursor-pointer group/link w-fit">
+                      <div className="mt-5 lg:mt-6 flex items-center gap-2 text-[#0ea5e9] font-medium text-sm cursor-pointer group/link w-fit">
                         <span className="relative overflow-hidden inline-flex h-5">
-                          <span className="inline-block transition-transform duration-300 group-hover/link:-translate-y-full">Explore Module</span>
-                          <span className="inline-block absolute left-0 top-0 translate-y-full transition-transform duration-300 group-hover/link:translate-y-0 text-[#10b981]">Explore Module</span>
+                          <span className="inline-block transition-transform duration-300 lg:group-hover/link:-translate-y-full">Explore Module</span>
+                          <span className="inline-block absolute left-0 top-0 translate-y-full transition-transform duration-300 lg:group-hover/link:translate-y-0 text-[#10b981]">Explore Module</span>
                         </span>
-                        <ArrowRight className="w-4 h-4 transform transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:text-[#10b981]" />
+                        <ArrowRight className="w-4 h-4 transform transition-transform duration-300 lg:group-hover/link:translate-x-1 lg:group-hover/link:text-[#10b981]" />
                       </div>
                     </div>
 
@@ -517,17 +518,16 @@ export default function AboutSection() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeIn}
-          className="flex justify-center pb-20 relative"
+          className="flex justify-center pb-10 lg:pb-20 relative"
         >
-          {/* Glowing Aura Behind Button */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-20 bg-emerald-400/30 blur-[40px] rounded-full pointer-events-none z-0" />
           
           <Magnetic>
-            <button className="group relative px-10 py-5 bg-slate-900 text-white rounded-full font-semibold text-lg shadow-[0_10px_40px_rgba(16,185,129,0.2)] hover:shadow-[0_20px_60px_rgba(16,185,129,0.4)] hover:-translate-y-1 transition-all duration-300 overflow-hidden z-10">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#10b981] to-[#0ea5e9] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <span className="relative z-10 flex items-center gap-3">
+            <button className="group relative px-8 py-4 lg:px-10 lg:py-5 bg-slate-900 text-white rounded-full font-semibold text-base lg:text-lg shadow-[0_10px_40px_rgba(16,185,129,0.2)] lg:hover:shadow-[0_20px_60px_rgba(16,185,129,0.4)] lg:hover:-translate-y-1 transition-all duration-300 overflow-hidden z-10 w-full sm:w-auto">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#10b981] to-[#0ea5e9] opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="relative z-10 flex items-center justify-center gap-3">
                 Apply for Fellowship
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 lg:group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
           </Magnetic>
